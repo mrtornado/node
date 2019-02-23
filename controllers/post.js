@@ -1,8 +1,9 @@
 const Post = require("../models/post");
-const Formidable = require("formidable");
+const formidable = require("formidable");
 const fs = require("fs");
+const _ = require("lodash");
 
-exports.postById = (res, req, next, id) => {
+exports.postById = (req, res, next, id) => {
   Post.findById(id)
     .populate("postedBy", "_id name")
     .exec((err, post) => {
@@ -27,7 +28,7 @@ exports.getPosts = (req, res) => {
 };
 
 exports.createPost = (req, res, next) => {
-  let form = new Formidable.IncomingForm();
+  let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields, files) => {
     if (err) {
@@ -54,7 +55,7 @@ exports.createPost = (req, res, next) => {
   });
 };
 
-exports.postByUser = (req, res) => {
+exports.postsByUser = (req, res) => {
   Post.find({ postedBy: req.profile._id })
     .populate("postedBy", "_id name")
     .sort("_created")
@@ -69,10 +70,10 @@ exports.postByUser = (req, res) => {
 };
 
 exports.isPoster = (req, res, next) => {
-  let isPoster = req.post && req.auth && req.post.postedBy._id === req.auth._id;
+  let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
   console.log("req.post", req.post);
   console.log("req.auth", req.auth);
-  console.log("res.post.postedBy._id", req.post.postedBy._id);
+  console.log("req.post.postedBy._id", req.post.postedBy._id);
   console.log("req.auth._id", req.auth._id);
   if (!isPoster) {
     return res.status(403).json({
@@ -80,6 +81,20 @@ exports.isPoster = (req, res, next) => {
     });
   }
   next();
+};
+
+exports.updatePost = (req, res) => {
+  let post = req.post;
+  post = _.extend(post, req.body);
+  post.updated = Date.now();
+  post.save((err) => {
+    if (err) {
+      return res.status(400).json({
+        error: err
+      });
+    }
+    res.json(post);
+  });
 };
 
 exports.deletePost = (req, res) => {

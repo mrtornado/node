@@ -21,7 +21,8 @@ exports.signin = (req, res) => {
     // if err or no user
     if (err || !user) {
       return res.status(401).json({
-        error: "No user with this email address exists"
+        error:
+          "No user associated with this email address exists. Please sign up!"
       });
     }
 
@@ -34,7 +35,7 @@ exports.signin = (req, res) => {
     }
 
     // generate a token with user id and secret
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
     // persist the token as "t" in cookie with expiry date
     res.cookie("t", token, { expire: new Date() + 9999 });
@@ -53,5 +54,5 @@ exports.signout = (req, res) => {
 exports.requireSignin = expressJwt({
   // if the token is valid, express jwt appends the verified user id in an auth key to the req
   secret: process.env.JWT_SECRET,
-  userProprety: "auth"
+  userProperty: "auth"
 });
