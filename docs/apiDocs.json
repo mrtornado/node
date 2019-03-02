@@ -1,15 +1,14 @@
 {
-    "/": "api docs",
-    "/signup": "signup",
-    "/signin": "signin",
-    "/signout": "@ signout",
-    "/user/:userId": "@ get/update/delete user",
-    "/user/findpeople/:userId": "@ get following suggestions",
-    "/user/photo/:userId": "get user photo",
-    "/users": "Get all users",
-    "/posts": "get all posts",
-    "/post/new/:userId": "@ create new post",
-    "/post/:postId": "@ update/delete post",
-    "/posts/by/:userId": "get posts by user"
-
+  "/": "api docs",
+  "/signup": "signup",
+  "/signin": "signin",
+  "/signout": "@ signout",
+  "/user/:userId": "@ get/update/delete user",
+  "/user/findpeople/:userId": "@ get following suggestions",
+  "/user/photo/:userId": "get user photo",
+  "/users": "get all users",
+  "/posts": "get all posts",
+  "/post/new/:userId": "@ create new post",
+  "/post/:postId": "@ update/delete post",
+  "/posts/by/:userId": "get posts by user"
 }
